@@ -1,4 +1,4 @@
-package com.nutrispec.nutrispecapp;
+package com.nutrispec.nutrispecapp.authentication;
 
 import java.io.IOException;
 import java.security.Key;
@@ -16,6 +16,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.ext.Provider;
 import javax.xml.bind.DatatypeConverter;
 
+
+import io.jsonwebtoken.Claims;
+import io.jsonwebtoken.Jws;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -30,7 +33,8 @@ public class JWTTokenFilter implements ContainerRequestFilter {
 		
 		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
     	byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary("c2VjcmV0");//this has to be base-64 encoded, it reads 'secret' if we de-encoded it
-    	Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
+    	String keyString = "simplekey";
+    	Key signingKey = new SecretKeySpec(keyString.getBytes(), signatureAlgorithm.getJcaName());
     	
         // Get the HTTP Authorization header from the request
     	
@@ -43,10 +47,12 @@ public class JWTTokenFilter implements ContainerRequestFilter {
         try {
 
             // Validate the token
-
-            Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token);
-
-            System.out.println("#### valid token : " + token);
+        	
+           Jws<Claims> claims = Jwts.parser().setSigningKey(signingKey).parseClaimsJws(token);
+           
+           System.out.println("#### Claims : " + claims.getBody().toString());
+          
+           System.out.println("#### valid token : " + token);
 
         } catch (Exception e) {
 
@@ -55,6 +61,7 @@ public class JWTTokenFilter implements ContainerRequestFilter {
             requestContext.abortWith(Response.status(Response.Status.UNAUTHORIZED).build());
 
         }
+       
 
 	}
 

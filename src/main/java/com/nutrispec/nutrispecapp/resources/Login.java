@@ -10,6 +10,7 @@ import javax.crypto.KeyGenerator;
 import javax.crypto.spec.SecretKeySpec;
 import javax.inject.Inject;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.FormParam;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -21,8 +22,9 @@ import javax.ws.rs.core.Response;
 import javax.ws.rs.core.UriInfo;
 import javax.xml.bind.DatatypeConverter;
 
-import com.nutrispec.nutrispecapp.JWTAuthentication;
+import com.nutrispec.nutrispecapp.authentication.JWTAuthentication;
 
+import io.jsonwebtoken.Claims;
 import io.jsonwebtoken.Jwts;
 import io.jsonwebtoken.SignatureAlgorithm;
 
@@ -37,8 +39,8 @@ public class Login {
     @POST
     @Path("/login")
     @Consumes(MediaType.APPLICATION_FORM_URLENCODED)
-    public Response authenticateUser(@QueryParam("login") String login,
-    								@QueryParam("password") String password) {
+    public Response authenticateUser(@FormParam("login") String login,
+    								 @FormParam("password") String password) {
 
         try {
 
@@ -47,7 +49,7 @@ public class Login {
             //authenticate(login, password);
 
             // Issue a token for the user
-
+        	System.out.println("login: "+login);
             String token = issueToken(login);
 
             // Return the token on the response
@@ -66,7 +68,7 @@ public class Login {
     	SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
     	byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary("c2VjcmV0");//this has to be base-64 encoded, it reads 'secret' if we de-encoded it
     	Key signingKey = new SecretKeySpec(apiKeySecretBytes, signatureAlgorithm.getJcaName());
-        
+    	
         String jwtToken = Jwts.builder()
                 .setSubject(login)
                 .setIssuer(uriInfo.getAbsolutePath().toString())
@@ -74,7 +76,7 @@ public class Login {
                 .signWith(signatureAlgorithm, signingKey)
                 .setExpiration(toDate(LocalDateTime.now().plusMinutes(15L)))
                 .compact();
-
+    	
         return jwtToken;
 
     }

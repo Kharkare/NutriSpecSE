@@ -1,4 +1,4 @@
-package com.nutrispec.nutrispecapp;
+package com.nutrispec.nutrispecapp.authentication;
 
 import static java.lang.annotation.ElementType.METHOD;
 import static java.lang.annotation.ElementType.TYPE;
