@@ -15,9 +15,15 @@ public class Nutritionist {
 	private String qualification;
 	private String operatingHours;
 	private String operatingDays;
+	private String password;
 	private List<NutritionistRatings> NutritionistRatings;
 	
-	
+	public String getPassword() {
+		return password;
+	}
+	public void setPassword(String password) {
+		this.password = password;
+	}
 	public String getEmail() {
 		return email;
 	}

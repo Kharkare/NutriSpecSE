@@ -3,6 +3,7 @@ package com.nutrispec.nutrispecapp.services;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
+import java.sql.ResultSetMetaData;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -52,27 +53,28 @@ public class NutritionistSearchService {
 	
 	private List<NutritionistRatings> getRatings(Nutritionist nutritionist) throws SQLException{
 		List<NutritionistRatings> listOfratings = new ArrayList<NutritionistRatings>();
-		final String selectQuery = "SELECT r.* FROM tbl_ratings r LEFT JOIN tbl_client c ON c.id = r.client WHERE r.nutritionist = ?";
+		final String selectQuery = "SELECT r.id AS ratings_id, r.client AS ratings_client, r.nutritionist AS ratings_nutritionist, r.ratings_number AS ratings_number, r.ratings_text AS ratings_text, c.* FROM tbl_ratings AS r INNER JOIN tbl_client AS c ON c.id = r.client WHERE r.nutritionist = ?";
 		PreparedStatement prepareStmt = conn.prepareStatement(selectQuery);
 		prepareStmt.setInt(1, Integer.parseInt(nutritionist.getId()));
 		ResultSet result = prepareStmt.executeQuery();
+		
 		while(result.next()) {
 			Client client = new Client();
 			NutritionistRatings ratings = new NutritionistRatings();
-			ratings.setId(String.valueOf(result.getInt("r.id")));
-			ratings.setRatingsInNumbers(result.getString("r.ratings_number"));
-			ratings.setRatingsText(result.getString("r.ratings_text"));
+			ratings.setId(String.valueOf(result.getInt("ratings_id")));
+			ratings.setRatingsInNumbers(result.getString("ratings_number"));
+			ratings.setRatingsText(result.getString("ratings_text"));
 			ratings.setNutritionistId(nutritionist.getId());
-			client.setId(String.valueOf(result.getInt("c.id")));
-			client.setName(result.getString("c.name"));
-			client.setEmail(result.getString("c.email"));
-			client.setEmail(result.getString("c.weight"));
-			client.setEmail(result.getString("c.height"));
-			client.setEmail(result.getString("c.gender"));
-			client.setEmail(result.getString("c.bmi"));
-			client.setEmail(result.getString("c.age"));
-			client.setEmail(result.getString("c.bloodgroup"));
-			client.setEmail(result.getString("c.profilepic"));
+			client.setId(String.valueOf(result.getInt("ratings_client")));
+			client.setName(result.getString("name"));
+			client.setEmail(result.getString("email"));
+			client.setWeight(result.getString("weight"));
+			client.setHeight(result.getString("height"));
+			client.setGender(result.getString("gender"));
+			client.setBmi(result.getString("bmi"));
+			client.setAge(result.getString("age"));
+			client.setBloodgroup(result.getString("bloodgroup"));
+			client.setProfilepic(result.getString("profilepic"));
 			ratings.setClient(client);
 			listOfratings.add(ratings);
 		}

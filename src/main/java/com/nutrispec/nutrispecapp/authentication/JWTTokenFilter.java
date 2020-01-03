@@ -32,7 +32,6 @@ public class JWTTokenFilter implements ContainerRequestFilter {
 		// TODO Auto-generated method stub
 		
 		SignatureAlgorithm signatureAlgorithm = SignatureAlgorithm.HS256;
-    	byte[] apiKeySecretBytes = DatatypeConverter.parseBase64Binary("c2VjcmV0");//this has to be base-64 encoded, it reads 'secret' if we de-encoded it
     	String keyString = "simplekey";
     	Key signingKey = new SecretKeySpec(keyString.getBytes(), signatureAlgorithm.getJcaName());
     	

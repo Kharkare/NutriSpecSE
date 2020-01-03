@@ -33,6 +33,9 @@ public class ClientService {
 		prepareStmt.setString(9, client.getAge());
 		prepareStmt.setString(10, client.getBloodgroup());
 		prepareStmt.setString(11, null);
+		
+		int stmtInsertSuccess = prepareStmt.executeUpdate();
+		
 	}
 	
 	public void addRatings(String clientid, NutritionistRatings ratings) throws SQLException {
