@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.SQLException;
 
+import com.nutrispec.nutrispecapp.models.Client;
 import com.nutrispec.nutrispecapp.models.Nutritionist;
 
 public class NutritionistService {
@@ -32,6 +33,11 @@ public class NutritionistService {
 		prepareStmt.setString(12, nutritionist.getOperatingDays());
 		
 		int stmtInsertSuccess = prepareStmt.executeUpdate();
+		
+	}
+
+	public void unroll(Nutritionist nutritionist, Client client) {
+		// TODO Auto-generated method stub
 		
 	}
 	

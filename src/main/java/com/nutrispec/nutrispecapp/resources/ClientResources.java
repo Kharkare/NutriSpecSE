@@ -16,6 +16,7 @@ import javax.ws.rs.core.Response;
 
 import com.nutrispec.nutrispecapp.models.Client;
 import com.nutrispec.nutrispecapp.models.JsonResponse;
+import com.nutrispec.nutrispecapp.models.Nutritionist;
 import com.nutrispec.nutrispecapp.models.NutritionistRatings;
 import com.nutrispec.nutrispecapp.services.ClientService;
 import com.nutrispec.nutrispecapp.services.NutritonistRatingsService;
@@ -60,5 +61,15 @@ public class ClientResources implements ResourceResponse {
 		}
 		return sendResponse(ratings, "Ratings added successfully");
 	}
+	
+	@Path("/unroll")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JsonResponse<Nutritionist> unrollClient(Nutritionist nutritionist, Client client){
+		
+		clientService.unroll(nutritionist,client);
+		return sendResponse(nutritionist, "Client unrolled sccessfuly");
+	} 
 
 }

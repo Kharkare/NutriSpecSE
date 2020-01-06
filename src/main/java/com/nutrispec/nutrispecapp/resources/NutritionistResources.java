@@ -2,11 +2,15 @@ package com.nutrispec.nutrispecapp.resources;
 
 import java.sql.SQLException;
 
+import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
+import javax.ws.rs.Produces;
 import javax.ws.rs.core.Configuration;
 import javax.ws.rs.core.Context;
+import javax.ws.rs.core.MediaType;
 
+import com.nutrispec.nutrispecapp.models.Client;
 import com.nutrispec.nutrispecapp.models.JsonResponse;
 import com.nutrispec.nutrispecapp.models.Nutritionist;
 import com.nutrispec.nutrispecapp.services.NutritionistService;
@@ -19,8 +23,10 @@ public class NutritionistResources implements ResourceResponse {
 	
 	NutritionistService service;
 	
-	@POST
 	@Path("/register")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
 	public JsonResponse<Nutritionist> registerNutritionist(Nutritionist nutritionist) {
 		try {
 			service.registerClient(nutritionist);
@@ -30,5 +36,15 @@ public class NutritionistResources implements ResourceResponse {
 		}
 		return sendResponse(nutritionist, "Nutritionist registered successfuly");
 	}
+	
+	@Path("/unroll")
+	@POST
+	@Produces(MediaType.APPLICATION_JSON)
+	@Consumes(MediaType.APPLICATION_JSON)
+	public JsonResponse<Client> unrollClient(Nutritionist nutritionist, Client client){
+		
+		service.unroll(nutritionist,client);
+		return sendResponse(client, "Client unrolled sccessfuly");
+	} 
 
 }

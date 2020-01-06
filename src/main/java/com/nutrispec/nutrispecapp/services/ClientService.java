@@ -8,6 +8,7 @@ import javax.ws.rs.core.Configuration;
 import javax.ws.rs.core.Context;
 
 import com.nutrispec.nutrispecapp.models.Client;
+import com.nutrispec.nutrispecapp.models.Nutritionist;
 import com.nutrispec.nutrispecapp.models.NutritionistRatings;
 
 public class ClientService {
@@ -47,6 +48,11 @@ public class ClientService {
 		prepareStmt.setInt(3, Integer.parseInt(ratings.getNutritionistId()));
 		prepareStmt.setString(4, ratings.getRatingsInNumbers());
 		prepareStmt.setString(5, ratings.getRatingsText());
+		
+	}
+
+	public void unroll(Nutritionist nutritionist, Client client) {
+		// TODO Auto-generated method stub
 		
 	}
 
