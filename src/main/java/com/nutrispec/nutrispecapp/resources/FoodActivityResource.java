@@ -1,6 +1,7 @@
 package com.nutrispec.nutrispecapp.resources;
 
 import java.sql.Connection;
+import java.sql.SQLException;
 import java.util.List;
 
 import javax.ws.rs.Consumes;
@@ -30,9 +31,14 @@ public class FoodActivityResource implements ResourceResponse {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public JsonResponse<FoodActivity> addWorkoutActivity(FoodActivity foodActivity){
+	public JsonResponse<FoodActivity> addFoodActivity(FoodActivity foodActivity){
 		foodService = new FoodActivityService((Connection) config.getProperty("conn"));
-		
+		try {
+			foodService.addFoodActivity(foodActivity);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return sendResponse(foodActivity, "Food Activity added successfuly");
 	}
 	
@@ -40,9 +46,18 @@ public class FoodActivityResource implements ResourceResponse {
 	@POST
 	@Produces(MediaType.APPLICATION_JSON)
 	@Consumes(MediaType.APPLICATION_JSON)
-	public JsonResponse<List<FoodActivity>> getAllWorkoutActivities(Client client){
+	public JsonResponse<List<FoodActivity>> getAllFoodActivities(Client client){
 		foodService = new FoodActivityService((Connection) config.getProperty("conn"));
-		List<FoodActivity> list = foodService.getAllFoodActivities(client);
+		List<FoodActivity> list = null;
+		try {
+			list = foodService.getAllFoodActivities(client);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return sendResponse(list, "List of All Food Activities");
 	}
 	
