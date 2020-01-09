@@ -12,6 +12,7 @@ import javax.ws.rs.core.Configuration;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 
+import com.nutrispec.nutrispecapp.models.Association;
 import com.nutrispec.nutrispecapp.models.Client;
 import com.nutrispec.nutrispecapp.models.JsonResponse;
 import com.nutrispec.nutrispecapp.models.Nutritionist;
@@ -42,10 +43,10 @@ public class NutritionistResources implements ResourceResponse {
 	
 	@Path("/unroll")
 	@POST
-	public JsonResponse<Client> unrollClient(Nutritionist nutritionist, Client client){
+	public JsonResponse<Association> unrollClient(Association associate){
 		service = new NutritionistService((Connection) config.getProperty("conn"));
-		service.unroll(nutritionist,client);
-		return sendResponse(client, "Client unrolled sccessfuly");
+		service.unroll(associate);
+		return sendResponse(associate, "Client unrolled sccessfuly");
 	}
 	
 	@Path("/getclients")

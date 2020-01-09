@@ -4,6 +4,7 @@ import java.sql.Connection;
 import java.sql.SQLException;
 
 import javax.ws.rs.Consumes;
+import javax.ws.rs.POST;
 import javax.ws.rs.Path;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Configuration;
@@ -29,6 +30,7 @@ public class ReportResources implements ResourceResponse {
 	
 	
 	@Path("/report")
+	@POST
 	public JsonResponse<Report> getReport(Report report) {
 		
 		report_service = new ReportService((Connection) config.getProperty("conn"));

@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import com.nutrispec.nutrispecapp.models.Association;
 import com.nutrispec.nutrispecapp.models.Client;
 import com.nutrispec.nutrispecapp.models.Nutritionist;
 
@@ -39,11 +40,6 @@ public class NutritionistService {
 		
 	}
 
-	public void unroll(Nutritionist nutritionist, Client client) {
-		// TODO Auto-generated method stub
-		
-	}
-
 	public List<Client> getClients(Nutritionist nutritionist) throws SQLException {
 		// TODO Auto-generated method stub
 		List<Client> all_clients = new ArrayList<Client>();
@@ -69,6 +65,11 @@ public class NutritionistService {
 		}
 		result.close();
 		return all_clients;
+	}
+
+	public void unroll(Association associate) {
+		// TODO Auto-generated method stub
+		
 	}
 	
 	
