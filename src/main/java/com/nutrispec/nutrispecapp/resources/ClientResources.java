@@ -17,7 +17,6 @@ import com.nutrispec.nutrispecapp.models.JsonResponse;
 import com.nutrispec.nutrispecapp.models.Nutritionist;
 import com.nutrispec.nutrispecapp.models.NutritionistRatings;
 import com.nutrispec.nutrispecapp.services.ClientService;
-import com.nutrispec.nutrispecapp.services.NutritonistRatingsService;
 
 @Path("/clients")
 @Produces(MediaType.APPLICATION_JSON)
@@ -28,7 +27,6 @@ public class ClientResources implements ResourceResponse {
     Configuration config;
 	
 	ClientService clientService;
-	NutritonistRatingsService nutritionistRatingsService;
 	
 	
 	@Path("/register")
@@ -49,8 +47,8 @@ public class ClientResources implements ResourceResponse {
 	@POST
 	public JsonResponse<NutritionistRatings> addNutritionistRatings(NutritionistRatings ratings){
 		try {
-			nutritionistRatingsService = new NutritonistRatingsService((Connection)config.getProperty("conn"));
-			nutritionistRatingsService.addRatings(ratings);
+			clientService = new ClientService((Connection)config.getProperty("conn"));
+			clientService.addRatings(ratings);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
@@ -63,6 +61,7 @@ public class ClientResources implements ResourceResponse {
 	public JsonResponse<Association> unrollClient(Association associate){
 		
 		try {
+			clientService = new ClientService((Connection)config.getProperty("conn"));
 			clientService.unroll(associate);
 		} catch (NumberFormatException | SQLException e) {
 			// TODO Auto-generated catch block
@@ -74,12 +73,14 @@ public class ClientResources implements ResourceResponse {
 	@Path("/enroll")
 	@POST
 	public JsonResponse<Association> enrollClient(Association association){
+		clientService = new ClientService((Connection)config.getProperty("conn"));
 		try {
 			clientService.enroll(association);
-		} catch (NumberFormatException | SQLException e) {
+		} catch (SQLException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
+		
 		return sendResponse(association, "Client Enrolled successfuly");
 	}
 	

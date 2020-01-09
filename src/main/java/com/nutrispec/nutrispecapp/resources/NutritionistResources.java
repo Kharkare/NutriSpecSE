@@ -16,6 +16,7 @@ import com.nutrispec.nutrispecapp.models.Association;
 import com.nutrispec.nutrispecapp.models.Client;
 import com.nutrispec.nutrispecapp.models.JsonResponse;
 import com.nutrispec.nutrispecapp.models.Nutritionist;
+import com.nutrispec.nutrispecapp.services.ClientService;
 import com.nutrispec.nutrispecapp.services.NutritionistService;
 
 @Path("/nutritionist")
@@ -45,7 +46,15 @@ public class NutritionistResources implements ResourceResponse {
 	@POST
 	public JsonResponse<Association> unrollClient(Association associate){
 		service = new NutritionistService((Connection) config.getProperty("conn"));
-		service.unroll(associate);
+		try {
+			service.unroll(associate);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 		return sendResponse(associate, "Client unrolled sccessfuly");
 	}
 	

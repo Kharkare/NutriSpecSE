@@ -67,9 +67,13 @@ public class NutritionistService {
 		return all_clients;
 	}
 
-	public void unroll(Association associate) {
+	public void unroll(Association association) throws NumberFormatException, SQLException {
 		// TODO Auto-generated method stub
-		
+		final String query = "DELETE FROM tbl_client_nutritionist_association WHERE client_id=? AND nutritionist_id=?";
+		PreparedStatement prepareStmt = conn.prepareStatement(query);
+		prepareStmt.setInt(1, Integer.parseInt(association.getClient().getId()));
+		prepareStmt.setInt(2, Integer.parseInt(association.getNutritionist().getId()));
+		prepareStmt.execute();
 	}
 	
 	

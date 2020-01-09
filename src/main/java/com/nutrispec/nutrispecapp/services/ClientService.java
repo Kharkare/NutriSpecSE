@@ -40,7 +40,7 @@ public class ClientService {
 		
 	}
 	
-	public void addRatings(String clientid, NutritionistRatings ratings) throws SQLException {
+	public void addRatings(NutritionistRatings ratings) throws SQLException {
 		
 		final String insertQuery = "INSERT INTO tbl_ratings (id, client, nutritionist, ratings_number, ratings_text) VALUES (?,?,?,?,?)";
 		PreparedStatement prepareStmt = conn.prepareStatement(insertQuery);
@@ -52,10 +52,11 @@ public class ClientService {
 		prepareStmt.execute();
 	}
 
-	public void enroll(Association association) throws NumberFormatException, SQLException {
+	public void enroll(Association association) throws SQLException {
 		// TODO Auto-generated method stub
 		final String insertQuery = "INSERT INTO tbl_client_nutritionist_association (id, client_id, nutritionist_id) VALUES (?,?,?)";
-		PreparedStatement prepareStmt = conn.prepareStatement(insertQuery);
+		PreparedStatement prepareStmt = null;
+		prepareStmt = conn.prepareStatement(insertQuery);
 		prepareStmt.setString(1, null);
 		prepareStmt.setInt(2, Integer.parseInt(association.getClient().getId()));
 		prepareStmt.setInt(3, Integer.parseInt(association.getNutritionist().getId()));
@@ -66,8 +67,8 @@ public class ClientService {
 		// TODO Auto-generated method stub
 		final String query = "DELETE FROM tbl_client_nutritionist_association WHERE client_id=? AND nutritionist_id=?";
 		PreparedStatement prepareStmt = conn.prepareStatement(query);
-		prepareStmt.setInt(2, Integer.parseInt(association.getClient().getId()));
-		prepareStmt.setInt(3, Integer.parseInt(association.getNutritionist().getId()));
+		prepareStmt.setInt(1, Integer.parseInt(association.getClient().getId()));
+		prepareStmt.setInt(2, Integer.parseInt(association.getNutritionist().getId()));
 		prepareStmt.execute();
 	}
 

@@ -23,7 +23,7 @@ public class FoodActivityService  {
 	
 	public List<FoodActivity> getAllFoodActivities(Client client) throws NumberFormatException, SQLException{
 		List<FoodActivity> list_food_activity = new ArrayList<FoodActivity>();
-		String query = "SELECT f.*,dict.id AS dict_id, dict.food_name AS food_name, dict.food_desc AS food_desc, dict.calorie_per_unit AS cal_per_unit, dict.unit_id AS unit_id, unit.unit_name AS unit_name, unit.unit_desc AS unit_desc FROM tbl_client_food_activity f INNER JOIN tbl_food_dictionary as dict ON f.food_id = dict.id INNER JOIN tbl_food_unit AS unit ON unit.id = f.id WHERE f.client_id = ?";
+		String query = "SELECT f.*,dict.id AS dict_id, dict.food_name AS food_name, dict.food_desc AS food_desc, dict.calorie_per_unit AS cal_per_unit, dict.unit_id AS unit_id, unit.unit_name AS unit_name, unit.unit_desc AS unit_desc FROM tbl_client_food_activity f INNER JOIN tbl_food_dictionary as dict ON f.food_id = dict.id INNER JOIN tbl_food_unit AS unit ON unit.id = dict.unit_id WHERE f.client_id = ?";
 		PreparedStatement stmt = conn.prepareStatement(query);
 		stmt.setInt(1, Integer.parseInt(client.getId()));
 		ResultSet result = stmt.executeQuery();
@@ -68,7 +68,7 @@ public class FoodActivityService  {
 	
 	public Report getAllFoodActivitiesAsPerDate(Report report) throws SQLException {
 		List<FoodActivity> list_food_activity = new ArrayList<FoodActivity>();
-		String query = "SELECT f.*,dict.id AS dict_id, dict.food_name AS food_name, dict.food_desc AS food_desc, dict.calorie_per_unit AS cal_per_unit, dict.unit_id AS unit_id, unit.unit_name AS unit_name, unit.unit_desc AS unit_desc FROM tbl_client_food_activity f INNER JOIN tbl_food_dictionary as dict ON f.food_id = dict.id INNER JOIN tbl_food_unit AS unit ON unit.id = f.id WHERE f.activity_date >= ? AND f.activity_date <= ? AND f.client_id = ?";
+		String query = "SELECT f.*,dict.id AS dict_id, dict.food_name AS food_name, dict.food_desc AS food_desc, dict.calorie_per_unit AS cal_per_unit, dict.unit_id AS unit_id, unit.unit_name AS unit_name, unit.unit_desc AS unit_desc FROM tbl_client_food_activity f INNER JOIN tbl_food_dictionary as dict ON f.food_id = dict.id INNER JOIN tbl_food_unit AS unit ON unit.id = dict.unit_id WHERE f.activity_date >= ? AND f.activity_date <= ? AND f.client_id = ?";
 		PreparedStatement stmt = conn.prepareStatement(query);
 		stmt.setDate(1, java.sql.Date.valueOf(report.getFromDate()));
 		stmt.setDate(2, java.sql.Date.valueOf(report.getToDate()));
