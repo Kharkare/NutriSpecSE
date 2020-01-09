@@ -16,6 +16,8 @@ import com.nutrispec.nutrispecapp.models.JsonResponse;
 import com.nutrispec.nutrispecapp.services.BlogService;
 
 @Path("/nutritionist")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class BlogResources implements ResourceResponse {
 	
 	@Context
@@ -25,8 +27,6 @@ public class BlogResources implements ResourceResponse {
 	
 	@Path("/addBlog")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public JsonResponse<Blog> addBlog(Blog blog) {
 		service = new BlogService((Connection)config.getProperty("conn"));
 		

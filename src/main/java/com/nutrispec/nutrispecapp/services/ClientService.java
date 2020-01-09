@@ -7,6 +7,7 @@ import java.sql.SQLException;
 import javax.ws.rs.core.Configuration;
 import javax.ws.rs.core.Context;
 
+import com.nutrispec.nutrispecapp.models.Association;
 import com.nutrispec.nutrispecapp.models.Client;
 import com.nutrispec.nutrispecapp.models.Nutritionist;
 import com.nutrispec.nutrispecapp.models.NutritionistRatings;
@@ -48,12 +49,26 @@ public class ClientService {
 		prepareStmt.setInt(3, Integer.parseInt(ratings.getNutritionistId()));
 		prepareStmt.setString(4, ratings.getRatingsInNumbers());
 		prepareStmt.setString(5, ratings.getRatingsText());
-		
+		prepareStmt.execute();
 	}
 
-	public void unroll(Nutritionist nutritionist, Client client) {
+	public void enroll(Association association) throws NumberFormatException, SQLException {
 		// TODO Auto-generated method stub
-		
+		final String insertQuery = "INSERT INTO tbl_client_nutritionist_association (id, client_id, nutritionist_id) VALUES (?,?,?)";
+		PreparedStatement prepareStmt = conn.prepareStatement(insertQuery);
+		prepareStmt.setString(1, null);
+		prepareStmt.setInt(2, Integer.parseInt(association.getClient().getId()));
+		prepareStmt.setInt(3, Integer.parseInt(association.getNutritionist().getId()));
+		prepareStmt.execute();
+	}
+
+	public void unroll(Association association) throws NumberFormatException, SQLException {
+		// TODO Auto-generated method stub
+		final String query = "DELETE FROM tbl_client_nutritionist_association WHERE client_id=? AND nutritionist_id=?";
+		PreparedStatement prepareStmt = conn.prepareStatement(query);
+		prepareStmt.setInt(2, Integer.parseInt(association.getClient().getId()));
+		prepareStmt.setInt(3, Integer.parseInt(association.getNutritionist().getId()));
+		prepareStmt.execute();
 	}
 
 }

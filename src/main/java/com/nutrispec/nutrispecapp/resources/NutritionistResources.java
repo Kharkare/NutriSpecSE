@@ -1,6 +1,8 @@
 package com.nutrispec.nutrispecapp.resources;
 
+import java.sql.Connection;
 import java.sql.SQLException;
+import java.util.List;
 
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
@@ -16,6 +18,8 @@ import com.nutrispec.nutrispecapp.models.Nutritionist;
 import com.nutrispec.nutrispecapp.services.NutritionistService;
 
 @Path("/nutritionist")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class NutritionistResources implements ResourceResponse {
 	
 	@Context
@@ -25,10 +29,9 @@ public class NutritionistResources implements ResourceResponse {
 	
 	@Path("/register")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public JsonResponse<Nutritionist> registerNutritionist(Nutritionist nutritionist) {
 		try {
+			service = new NutritionistService((Connection) config.getProperty("conn"));
 			service.registerClient(nutritionist);
 		} catch (SQLException e) {
 			// TODO Auto-generated catch block
@@ -39,12 +42,25 @@ public class NutritionistResources implements ResourceResponse {
 	
 	@Path("/unroll")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public JsonResponse<Client> unrollClient(Nutritionist nutritionist, Client client){
-		
+		service = new NutritionistService((Connection) config.getProperty("conn"));
 		service.unroll(nutritionist,client);
 		return sendResponse(client, "Client unrolled sccessfuly");
-	} 
+	}
+	
+	@Path("/getclients")
+	@POST
+	public JsonResponse<List<Client>> getClients(Nutritionist nutritionist){
+		service = new NutritionistService((Connection) config.getProperty("conn"));
+		List<Client> client_list = null;
+		try {
+			client_list = service.getClients(nutritionist);
+		} catch (SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sendResponse(client_list, "List of all clients associated");
+		
+	}
 
 }

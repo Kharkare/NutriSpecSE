@@ -3,17 +3,15 @@ package com.nutrispec.nutrispecapp.resources;
 import java.sql.Connection;
 import java.sql.SQLException;
 
-import javax.inject.Inject;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
-import javax.ws.rs.PathParam;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Configuration;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
+import com.nutrispec.nutrispecapp.models.Association;
 import com.nutrispec.nutrispecapp.models.Client;
 import com.nutrispec.nutrispecapp.models.JsonResponse;
 import com.nutrispec.nutrispecapp.models.Nutritionist;
@@ -22,6 +20,8 @@ import com.nutrispec.nutrispecapp.services.ClientService;
 import com.nutrispec.nutrispecapp.services.NutritonistRatingsService;
 
 @Path("/clients")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class ClientResources implements ResourceResponse {
 	
 	@Context
@@ -33,8 +33,6 @@ public class ClientResources implements ResourceResponse {
 	
 	@Path("/register")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public JsonResponse<Client> registerClient(Client client){
 		System.out.println("Name:"+client.getName());
 		try {
@@ -49,8 +47,6 @@ public class ClientResources implements ResourceResponse {
 	
 	@Path("/addRatings")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public JsonResponse<NutritionistRatings> addNutritionistRatings(NutritionistRatings ratings){
 		try {
 			nutritionistRatingsService = new NutritonistRatingsService((Connection)config.getProperty("conn"));
@@ -64,12 +60,28 @@ public class ClientResources implements ResourceResponse {
 	
 	@Path("/unroll")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
-	public JsonResponse<Nutritionist> unrollClient(Nutritionist nutritionist, Client client){
+	public JsonResponse<Association> unrollClient(Association associate){
 		
-		clientService.unroll(nutritionist,client);
-		return sendResponse(nutritionist, "Client unrolled sccessfuly");
-	} 
+		try {
+			clientService.unroll(associate);
+		} catch (NumberFormatException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sendResponse(associate, "Client unrolled successfuly");
+	}
+	
+	@Path("/enroll")
+	@POST
+	public JsonResponse<Association> enrollClient(Association association){
+		try {
+			clientService.enroll(association);
+		} catch (NumberFormatException | SQLException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return sendResponse(association, "Client Enrolled successfuly");
+	}
+	
 
 }

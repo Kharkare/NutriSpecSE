@@ -15,6 +15,8 @@ import com.nutrispec.nutrispecapp.models.Unit;
 import com.nutrispec.nutrispecapp.services.UnitService;
 
 @Path("/main")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class UnitResource implements ResourceResponse {
 	
 	@Context
@@ -24,8 +26,6 @@ public class UnitResource implements ResourceResponse {
 	
 	@Path("/addUnit")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public JsonResponse<Unit> addUnit(Unit unit){
 		service = new UnitService((Connection)config.getProperty("conn"));
 		service.addUnit(unit);
@@ -34,8 +34,6 @@ public class UnitResource implements ResourceResponse {
 	
 	@Path("/deleteUnit")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public JsonResponse<Unit> deleteUnit(Unit unit){
 		service = new UnitService((Connection)config.getProperty("conn"));
 		service.deleteUnit(unit);

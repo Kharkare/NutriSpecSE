@@ -16,6 +16,8 @@ import com.nutrispec.nutrispecapp.models.JsonResponse;
 import com.nutrispec.nutrispecapp.services.FoodDictionaryService;
 
 @Path("/main")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class FoodDictionaryResources implements ResourceResponse {
 	
 	@Context
@@ -25,8 +27,6 @@ public class FoodDictionaryResources implements ResourceResponse {
 	
 	@Path("/addFoodDictionary")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public JsonResponse<FoodDictionary> addFoodDictionary(FoodDictionary food_dict) {
 		
 		service = new FoodDictionaryService((Connection) config.getProperty("conn"));
@@ -36,8 +36,6 @@ public class FoodDictionaryResources implements ResourceResponse {
 	
 	@Path("/deleteFoodDictionary")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public JsonResponse<FoodDictionary> deleteFoodDictionary(FoodDictionary food_dict){
 		
 		service = new FoodDictionaryService((Connection) config.getProperty("conn"));

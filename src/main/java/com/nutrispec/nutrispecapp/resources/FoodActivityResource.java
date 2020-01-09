@@ -20,6 +20,8 @@ import com.nutrispec.nutrispecapp.services.FoodActivityService;
 import com.nutrispec.nutrispecapp.services.WorkoutActivityService;
 
 @Path("/clients")
+@Produces(MediaType.APPLICATION_JSON)
+@Consumes(MediaType.APPLICATION_JSON)
 public class FoodActivityResource implements ResourceResponse {
 	
 	@Context
@@ -29,8 +31,6 @@ public class FoodActivityResource implements ResourceResponse {
 	
 	@Path("/addFoodActivity")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public JsonResponse<FoodActivity> addFoodActivity(FoodActivity foodActivity){
 		foodService = new FoodActivityService((Connection) config.getProperty("conn"));
 		try {
@@ -44,8 +44,6 @@ public class FoodActivityResource implements ResourceResponse {
 	
 	@Path("/getAllFoodActivity")
 	@POST
-	@Produces(MediaType.APPLICATION_JSON)
-	@Consumes(MediaType.APPLICATION_JSON)
 	public JsonResponse<List<FoodActivity>> getAllFoodActivities(Client client){
 		foodService = new FoodActivityService((Connection) config.getProperty("conn"));
 		List<FoodActivity> list = null;

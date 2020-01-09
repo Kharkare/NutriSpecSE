@@ -63,12 +63,39 @@ public class WorkoutActivityService {
 			
 			allWorkoutActivities.add(workout_activity);
 		}
-		
+		result.close();
 		return allWorkoutActivities;
 	}
 	
-	public Report getAllWorkoutActivitiesAsPerDate(Report report){
+	public Report getAllWorkoutActivitiesAsPerDate(Report report) throws SQLException{
+		List<WorkoutActivity> allWorkoutActivities = new ArrayList<WorkoutActivity>();
+		String query = "SELECT w.*,dict.id AS dict_id, dict.workout_name AS workout_name, dict.workout_desc AS workout_desc, dict.calorie_per_unit AS cal_per_unit FROM tbl_client_workout_activity w INNER JOIN tbl_workout_dictionary AS dict ON w.workout_id = dict.id WHERE w.activity_date >= ? AND w.activity_date <= ? AND w.client_id= ?";
+		PreparedStatement stmt = conn.prepareStatement(query);
+		stmt.setDate(1, java.sql.Date.valueOf(report.getFromDate()));
+		stmt.setDate(2, java.sql.Date.valueOf(report.getToDate()));
+		stmt.setInt(3, Integer.parseInt(report.getClient_id()));
 		
+		ResultSet result = stmt.executeQuery();
+		
+		while(result.next()) {
+			WorkoutActivity workout_activity = new WorkoutActivity();
+			workout_activity.setId(String.valueOf(result.getInt("id")));
+			workout_activity.setClient(null);
+			workout_activity.setActivity_date(result.getString("activity_date"));
+			workout_activity.setActivity_time(result.getString("activity_time"));
+			workout_activity.setQuantity(result.getString("quantity"));
+			
+			WorkoutDictionary dictionary = new WorkoutDictionary();
+			dictionary.setCalorie_per_unit(result.getString("cal_per_unit"));
+			dictionary.setId(String.valueOf(result.getInt("dict_id")));
+			dictionary.setWorkoutDesc(result.getString("workout_desc"));
+			dictionary.setWorkoutName(result.getString("workout_name"));
+			workout_activity.setWorkout(dictionary);
+			
+			allWorkoutActivities.add(workout_activity);
+		}
+		result.close();
+		report.setWorkout_activity(allWorkoutActivities);
 		return report;
 	}
 	
