@@ -3,7 +3,7 @@
 -- https://www.phpmyadmin.net/
 --
 -- Host: localhost:3306
--- Generation Time: Jan 03, 2020 at 01:02 AM
+-- Generation Time: Jan 13, 2020 at 12:30 PM
 -- Server version: 8.0.18
 -- PHP Version: 7.3.13
 
@@ -23,6 +23,22 @@ SET time_zone = "+00:00";
 --
 CREATE DATABASE IF NOT EXISTS `nutrispecdb` DEFAULT CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
 USE `nutrispecdb`;
+
+-- --------------------------------------------------------
+
+--
+-- Table structure for table `tbl_blogs`
+--
+
+CREATE TABLE `tbl_blogs` (
+  `id` int(11) NOT NULL,
+  `nutritionist_id` int(11) NOT NULL,
+  `blog_title` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `blog_article` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `blog_image` text COLLATE utf8mb4_unicode_ci NOT NULL,
+  `blog_date` date NOT NULL,
+  `blog_time` text COLLATE utf8mb4_unicode_ci NOT NULL
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_unicode_ci;
 
 -- --------------------------------------------------------
 
@@ -63,9 +79,24 @@ CREATE TABLE `tbl_client_food_activity` (
   `food_id` int(11) NOT NULL,
   `client_id` int(11) NOT NULL,
   `activity_date` date NOT NULL,
-  `activity_time` timestamp NOT NULL,
-  `food_quantity` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
+  `activity_time` text NOT NULL,
+  `quantity` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tbl_client_food_activity`
+--
+
+INSERT INTO `tbl_client_food_activity` (`id`, `food_id`, `client_id`, `activity_date`, `activity_time`, `quantity`) VALUES
+(1, 1, 1, '2020-01-01', '8PM', '3'),
+(2, 1, 1, '2020-01-07', '8PM', '5'),
+(3, 1, 1, '2020-01-10', '8PM', '6'),
+(4, 1, 1, '2020-01-11', '8PM', '4'),
+(5, 2, 2, '2020-01-01', '9PM', '4'),
+(6, 2, 1, '2020-01-08', '7PM', '4'),
+(7, 1, 1, '2020-01-11', '8PM', '4'),
+(8, 1, 1, '2020-01-12', '07:58:06', '24'),
+(9, 1, 1, '2020-01-12', '08:06:02', '45');
 
 -- --------------------------------------------------------
 
@@ -90,9 +121,19 @@ CREATE TABLE `tbl_client_workout_activity` (
   `client_id` int(11) NOT NULL,
   `workout_id` int(11) NOT NULL,
   `activity_date` date NOT NULL,
-  `activity_time` time NOT NULL,
+  `activity_time` text NOT NULL,
   `quantity` text CHARACTER SET utf8 COLLATE utf8_general_ci NOT NULL
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8;
+
+--
+-- Dumping data for table `tbl_client_workout_activity`
+--
+
+INSERT INTO `tbl_client_workout_activity` (`id`, `client_id`, `workout_id`, `activity_date`, `activity_time`, `quantity`) VALUES
+(1, 1, 1, '2020-01-01', '10AM', '4'),
+(2, 2, 1, '2020-01-02', '11AM', '4'),
+(3, 1, 1, '2020-01-08', '6AM', '4'),
+(4, 1, 1, '2020-01-08', '6AM', '4');
 
 -- --------------------------------------------------------
 
@@ -113,7 +154,8 @@ CREATE TABLE `tbl_food_dictionary` (
 --
 
 INSERT INTO `tbl_food_dictionary` (`id`, `food_name`, `food_desc`, `calorie_per_unit`, `unit_id`) VALUES
-(1, 'Dal Rice', 'A plate of rice and dal', '20', 1);
+(1, 'Dal Rice', 'A plate of rice and dal', '20', 1),
+(2, 'Pizza plate', 'a plate of pizza', '20', 2);
 
 -- --------------------------------------------------------
 
@@ -132,7 +174,8 @@ CREATE TABLE `tbl_food_unit` (
 --
 
 INSERT INTO `tbl_food_unit` (`id`, `unit_name`, `unit_desc`) VALUES
-(1, 'plate_rice_dal', 'A plate of rice and dal');
+(1, 'plate_rice_dal', 'A plate of rice and dal'),
+(2, 'Pizza', 'A plate of pizza');
 
 -- --------------------------------------------------------
 
@@ -160,7 +203,8 @@ CREATE TABLE `tbl_nutritionist` (
 --
 
 INSERT INTO `tbl_nutritionist` (`id`, `name`, `email`, `password`, `specializations`, `address`, `city`, `pincode`, `qualification`, `about`, `operatingHours`, `operatingDays`) VALUES
-(1, 'Dr. Kunal', 'kunal@gmail.com', 'password', 'Public, toxicology', 'Alsenberger Stasse 9', 'Hof', '95028', 'MSc', 'My about text', '7:00 AM', 'Monday, Tuesday, Wednesday');
+(1, 'Dr. Kunal', 'kunal@gmail.com', 'password', 'Public, toxicology', 'Alsenberger Stasse 9', 'Hof', '95028', 'MSc', 'My about text', '7:00 AM', 'Monday, Tuesday, Wednesday'),
+(2, 'Dr Lasoon Chivda', 'lasson@chivda.com', 'test', 'UPSC', 'Munster Strasse 11', 'Hof', '432556', 'test', 'Hof', '7AM to 5PM', 'Mon - Fri');
 
 -- --------------------------------------------------------
 
@@ -182,7 +226,8 @@ CREATE TABLE `tbl_ratings` (
 
 INSERT INTO `tbl_ratings` (`id`, `client`, `nutritionist`, `ratings_number`, `ratings_text`) VALUES
 (1, 1, 1, '4', 'Good doctor'),
-(2, 2, 1, '2', 'Not so good');
+(2, 2, 1, '2', 'Not so good'),
+(3, 1, 2, '4', 'Very good doctor');
 
 -- --------------------------------------------------------
 
@@ -207,6 +252,13 @@ INSERT INTO `tbl_workout_dictionary` (`id`, `workout_name`, `workout_desc`, `cal
 --
 -- Indexes for dumped tables
 --
+
+--
+-- Indexes for table `tbl_blogs`
+--
+ALTER TABLE `tbl_blogs`
+  ADD PRIMARY KEY (`id`),
+  ADD KEY `blog_nutritionist_id` (`nutritionist_id`);
 
 --
 -- Indexes for table `tbl_client`
@@ -276,6 +328,12 @@ ALTER TABLE `tbl_workout_dictionary`
 --
 
 --
+-- AUTO_INCREMENT for table `tbl_blogs`
+--
+ALTER TABLE `tbl_blogs`
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+
+--
 -- AUTO_INCREMENT for table `tbl_client`
 --
 ALTER TABLE `tbl_client`
@@ -285,43 +343,43 @@ ALTER TABLE `tbl_client`
 -- AUTO_INCREMENT for table `tbl_client_food_activity`
 --
 ALTER TABLE `tbl_client_food_activity`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=10;
 
 --
 -- AUTO_INCREMENT for table `tbl_client_nutritionist_association`
 --
 ALTER TABLE `tbl_client_nutritionist_association`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_client_workout_activity`
 --
 ALTER TABLE `tbl_client_workout_activity`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=5;
 
 --
 -- AUTO_INCREMENT for table `tbl_food_dictionary`
 --
 ALTER TABLE `tbl_food_dictionary`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_food_unit`
 --
 ALTER TABLE `tbl_food_unit`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_nutritionist`
 --
 ALTER TABLE `tbl_nutritionist`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=2;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
 
 --
 -- AUTO_INCREMENT for table `tbl_ratings`
 --
 ALTER TABLE `tbl_ratings`
-  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=3;
+  MODIFY `id` int(11) NOT NULL AUTO_INCREMENT, AUTO_INCREMENT=4;
 
 --
 -- AUTO_INCREMENT for table `tbl_workout_dictionary`
@@ -337,7 +395,8 @@ ALTER TABLE `tbl_workout_dictionary`
 -- Constraints for table `tbl_client_food_activity`
 --
 ALTER TABLE `tbl_client_food_activity`
-  ADD CONSTRAINT `food_activity_client_id` FOREIGN KEY (`client_id`) REFERENCES `tbl_client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
+  ADD CONSTRAINT `food_activity_client_id` FOREIGN KEY (`client_id`) REFERENCES `tbl_client` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
+  ADD CONSTRAINT `food_dictionary_id` FOREIGN KEY (`food_id`) REFERENCES `tbl_food_dictionary` (`id`) ON DELETE CASCADE ON UPDATE CASCADE;
 
 --
 -- Constraints for table `tbl_client_nutritionist_association`
